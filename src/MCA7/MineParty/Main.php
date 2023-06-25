@@ -105,7 +105,7 @@ class Main extends PluginBase implements Listener
 
 	public function onBreak(BlockBreakEvent $e) : void
 	{
-		$name = $e->getPlayer()->getName();
+		$name = $e->getPlayer();
 		if ($this->status["STATUS"] === "on") {
 			$time_end = microtime(true);
 			$time = $time_end - (float)$this->status["timeStart"];
@@ -129,7 +129,8 @@ class Main extends PluginBase implements Listener
 				\n §b" . $player . C::RED . " : " . C::YELLOW . $winner . " Blocks
 				\n §b" . $player . " §ewins §f$" . $reward . " §e($" .$this->getConfig()->get("price-money"). " per block mined) 
 				\n§7===== §l========= ===== §r§7=====");
-				BedrockEconomyAPI::legacy()->addToPlayerBalance($player, $reward);
+				$eco = EconomyAPI::getInstance();
+				$eco->addMoney($player, $reward);
 				foreach ($this->players as $player) {
 					unset($this->players[$player]);
 				}
